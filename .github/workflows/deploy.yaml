@@ -5,17 +5,21 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # or 'master', depending on your branch
+      - main  # Or whichever branch you're deploying from
+  workflow_dispatch:  
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:  # Explicitly set permissions for GITHUB_TOKEN
+      contents: write
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Node.js (for build steps, if any)
+    - name: Set up Node.js (optional)
       uses: actions/setup-node@v3
       with:
         node-version: '16'
@@ -24,4 +28,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: . # Publishing the root directory (where index.html is located)
+        publish_dir: .  # This is where your static site files (index.html, etc.) are located
